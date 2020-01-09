@@ -1,12 +1,12 @@
 import React from 'react';
 import GlobalStyles from "./GlobalStyles";
-import UserForm from "./Components/UserForm";
+import Template from "./Components/Template";
 
 function App() {
   return (
     <div className="App">
       <GlobalStyles />
-      <UserForm />
+      <Template />
     </div>
   );
 }

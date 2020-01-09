@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Row = styled.div`
+const List = styled.div`
   width: 100%;
   height: 6vh;
   display: flex;
@@ -12,7 +12,7 @@ const Row = styled.div`
   }
 `;
 
-const Column = styled.span`
+const Item = styled.span`
   margin: 0px 10px;
   width: 95px;
   min-width: 95px;
@@ -36,11 +36,11 @@ const Button = styled.button`
 `;
 
 export default ({ id, email, name, phoneNumber, address, onDelete }) => 
-  <Row>
-    <Column>{id}</Column>
-    <Column>{email}</Column>
-    <Column>{name}</Column>
-    <Column>{phoneNumber}</Column>
-    <Column>{address}</Column>
-    <Column>{id === "id" ? "-" : <Button onClick={() => onDelete(id)}>삭제</Button>}</Column>
-  </Row>
+  <List>
+    <Item>{id}</Item>
+    <Item>{email}</Item>
+    <Item>{name}</Item>
+    <Item>{phoneNumber}</Item>
+    <Item>{address}</Item>
+    <Item>{id === "id" ? "-" : <Button onClick={() => onDelete(id)}>삭제</Button>}</Item>
+  </List>
