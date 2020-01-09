@@ -34,6 +34,10 @@ User.statics.deleteUserById = function(id) {
   return this.findOneAndDelete({ id: id }).exec();
 }
 
+User.statics.updateAddressById = function(id, address) {
+  return this.findByIdAndUpdate({ id: id, $set: { address } });
+}
+
 autoIncrement.initialize(mongoose.connection);
 User.plugin(autoIncrement.plugin, {
   model: "User",

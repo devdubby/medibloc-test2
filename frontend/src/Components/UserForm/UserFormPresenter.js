@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Row from "./Row";
-import Loader from "../../Loader";
+import Loader from "../../common/Loader";
 
 const Container = styled.div`
   display: flex;
@@ -66,10 +66,10 @@ const UserFormPresenter = ({
   onRegister,
   onDelete,
   isBtnLoading,
-  isEmailValidation,
-  isNameValidation,
-  isNumberValidation,
-  isAddressValidation,
+  isValidEmail,
+  isValidName,
+  isValidPhoneNumber,
+  isValidAddress,
 }) => (
   <Container>
     <InputContainer onSubmit={onRegister}>
@@ -78,38 +78,40 @@ const UserFormPresenter = ({
         placeholder="email"
         value={email}
         onChange={event => onChange(event)}
-        validation={isEmailValidation}
+        validation={isValidEmail}
       />
       <Input
         id="name"
         placeholder="이름(2자 이상)"
         value={name}
         onChange={event => onChange(event)}
-        validation={isNameValidation}
+        validation={isValidName}
+        maxLength="10"
       />
       <Input
         id="phoneNumber"
         placeholder="전화번호(-없이 입력)"
         value={phoneNumber}
         onChange={event => onChange(event)}
-        validation={isNumberValidation}
+        validation={isValidPhoneNumber}
+        maxLength="11"
       />
       <Input
         id="address"
         placeholder="주소"
         value={address}
         onChange={event => onChange(event)}
-        validation={isAddressValidation}
+        validation={isValidAddress}
       />
       {isBtnLoading ? (
         <Loader />
       ) : (
         <Button
           isBtnActive={
-            isEmailValidation &&
-            isNameValidation &&
-            isNumberValidation &&
-            isAddressValidation
+            isValidEmail &&
+            isValidName &&
+            isValidPhoneNumber &&
+            isValidAddress
           }
         >
           생성

@@ -2,8 +2,6 @@ import { api } from "../common/api";
 
 export const getUserList = () =>
   api.get("users")
-  .then(res => res.data)
-  .catch(err => err.response.data);
 
 export const registerUser = (email, name, phoneNumber, address) => 
   api.post("users", {
@@ -13,5 +11,10 @@ export const registerUser = (email, name, phoneNumber, address) =>
     address
   });
 
-export const deleteUser = (id) => 
+export const deleteUser = id => 
   api.delete(`users?id=${id}`)
+
+export const modifyAddress = (id, address) =>
+  api.put(`users?id=${id}`, {
+    address
+  });

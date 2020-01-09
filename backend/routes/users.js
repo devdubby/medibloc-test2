@@ -6,20 +6,12 @@ router.get("/", (req, res, next) => {
   const respond = (data) => {
     res.json({
       success: true,
-      data
+      users: data,
     });
   };
 
-  const onError = error => {
-    res.status(409).json({
-      success: false,
-      message: error.message
-    });
-  };
-
-  User.find()
-    .then(respond)
-    .catch(onError);
+  User.findAll()
+    .then(respond);
 });
 
 router.post("/", (req, res, next) => {
@@ -74,6 +66,32 @@ router.delete("/", (req, res, next) => {
   };
 
   User.deleteUserById(id)
+    .then(respond)
+    .catch(onError);
+});
+
+router.put("/", (req, res, next) => {
+  const { query: { id }, body: { address } } = req;
+
+  const respond = (user) => {
+    if(user) {
+      res.json({
+        success: true,
+        message: "변경 되었습니다."
+      });
+    } else {
+      throw new Error("해당 유저를 찾지 못했습니다.");
+    }
+  };
+
+  const onError = (error) => {
+    res.status(409).json({
+      success: false,
+      message: error.message
+    });
+  };
+
+  User.updateAddressById(id, address)
     .then(respond)
     .catch(onError);
 });

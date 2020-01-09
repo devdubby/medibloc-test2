@@ -4,7 +4,7 @@ import { getUserList, registerUser, deleteUser } from "../../actions";
 import {
   emailValidator,
   nameValidator,
-  numberValidator,
+  phoneNumberValidator,
   addressValidator
 } from "../../helpers";
 
@@ -21,47 +21,34 @@ class UserFormContainer extends Component {
       error: null,
       loading: true,
       isBtnLoading: false,
-      isEmailValidation: false,
-      isNameValidation: false,
-      isNumberValidation: false,
-      isAddressValidation: false
+      isValidEmail: false,
+      isValidName: false,
+      isValidPhoneNumber: false,
+      isValidAddress: false,
     };
   }
 
   async componentDidMount() {
     try {
-      const { data: users } = await getUserList();
-      this.setState({ users });
-    } catch {
-      this.setState({ error: "Something error arise!" });
-    } finally {
-      this.setState({ loading: false });
+      const { data: { users }} = await getUserList();
+      this.setState({ users, loading: false });
+    } catch (err) {
+      const { data: { message }, status, statusText } = err.response;
+      alert(message || `${status} ${statusText}`);
+      // this.setState({ error: message || `${status} ${statusText}` });
     }
   }
 
   onChange = event => {
     const { id, value } = event.target;
-    switch (id) {
-      case "email":
-        const isEmailValidation = emailValidator(value);
-        this.setState({ isEmailValidation });
-        break;
-      case "name":
-        const isNameValidation = nameValidator(value);
-        this.setState({ isNameValidation });
-        break;
-      case "phoneNumber":
-        const isNumberValidation = numberValidator(value);
-        this.setState({ isNumberValidation });
-        break;
-      case "address":
-        const isAddressValidation = addressValidator(value);
-        this.setState({ isAddressValidation });
-        break;
-      default:
-        break;
-    }
-    this.setState({ [id]: value });
+    const validatorObj = {
+      email: emailValidator(value),
+      name: nameValidator(value),
+      phoneNumber: phoneNumberValidator(value),
+      address: addressValidator(value)
+    };
+    const isValid = validatorObj[id];
+    this.setState({ [id]: value, ...isValid });
   };
 
   onRegister = async event => {
@@ -71,17 +58,17 @@ class UserFormContainer extends Component {
       name,
       phoneNumber,
       address,
-      isEmailValidation,
-      isNameValidation,
-      isNumberValidation,
-      isAddressValidation
+      isValidEmail,
+      isValidName,
+      isValidPhoneNumber,
+      isValidAddress
     } = this.state;
 
     if (
-      !isEmailValidation ||
-      !isNameValidation ||
-      !isNumberValidation ||
-      !isAddressValidation
+      !isValidEmail ||
+      !isValidName ||
+      !isValidPhoneNumber ||
+      !isValidAddress
     ) {
       return;
     }
@@ -99,6 +86,7 @@ class UserFormContainer extends Component {
     } catch (err) {
       const { data: { message }, status, statusText } = err.response;
       alert(message || `${status} ${statusText}`);
+      // this.setState({ error: message || `${status} ${statusText}` });
     }
   };
 
@@ -112,6 +100,7 @@ class UserFormContainer extends Component {
     } catch(err) {
       const { data: { message }, status, statusText } = err.response;
       alert(message || `${status} ${statusText}`);
+      // this.setState({ error: message || `${status} ${statusText}` });
     }
   };
 
@@ -126,10 +115,10 @@ class UserFormContainer extends Component {
       error,
       loading,
       isBtnLoading,
-      isEmailValidation,
-      isNameValidation,
-      isAddressValidation,
-      isNumberValidation
+      isValidEmail,
+      isValidName,
+      isValidAddress,
+      isValidPhoneNumber
     } = this.state;
     return (
       <UserFormPresenter
@@ -144,10 +133,10 @@ class UserFormContainer extends Component {
         onRegister={this.onRegister}
         onDelete={this.onDelete}
         isBtnLoading={isBtnLoading}
-        isEmailValidation={isEmailValidation}
-        isNameValidation={isNameValidation}
-        isAddressValidation={isAddressValidation}
-        isNumberValidation={isNumberValidation}
+        isValidEmail={isValidEmail}
+        isValidName={isValidName}
+        isValidAddress={isValidAddress}
+        isValidPhoneNumber={isValidPhoneNumber}
       />
     );
   }
