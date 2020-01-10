@@ -1,3 +1,3 @@
-import TemplatePresenter from "./TemplatePresenter";
+import TemplateContainer from "./TemplateContainer";
 
-export default TemplatePresenter;
+export default TemplateContainer;

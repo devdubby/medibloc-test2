@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import Loader from "../Loader";
 
 const Form = styled.form`
@@ -89,5 +90,20 @@ const FormPresenter = ({
       </Button>
     )}
   </Form>
+
+FormPresenter.propTypes = {
+  email: PropTypes.string,
+  name: PropTypes.string,
+  phoneNumber: PropTypes.string,
+  address: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  onRegister: PropTypes.func.isRequired,
+  isBtnLoading: PropTypes.bool.isRequired,
+  isValidEmail: PropTypes.bool.isRequired,
+  isValidName: PropTypes.bool.isRequired,
+  isValidPhoneNumber: PropTypes.bool.isRequired,
+  isValidAddress: PropTypes.bool.isRequired,
+  isValid: PropTypes.bool.isRequired,
+};
 
 export default FormPresenter;
