@@ -41,7 +41,13 @@ class FormContainer extends Component {
       return;
 
     this.props.onRegister(email, name, phoneNumber, address, isValid);
-    this.setState({ isBtnLoading: true });
+    this.setState({
+      email: "",
+      name: "",
+      phoneNumber: "",
+      address: "", 
+      isBtnLoading: true 
+    });
     setTimeout(() => {
       this.setState({ isBtnLoading: false });
     }, 1500);

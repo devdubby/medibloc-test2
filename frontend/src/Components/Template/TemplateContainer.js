@@ -30,13 +30,7 @@ class TemplateContainer extends Component {
     try {
       await registerUser(email, name, phoneNumber, address);
       const { data: { users }} = await getUserList();
-      this.setState({
-        email: "",
-        name: "",
-        phoneNumber: "",
-        address: "",
-        users,
-      });
+      this.setState({ users });
     } catch (err) {
       const { data: { message }, status, statusText } = err.response;
       alert(message || `${status} ${statusText}`);
