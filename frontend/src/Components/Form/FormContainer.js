@@ -40,12 +40,22 @@ class FormContainer extends Component {
     if (!isValid)
       return;
 
-    this.props.onRegister(email, name, phoneNumber, address, isValid);
+    const inputUser = {
+      email, 
+      name, 
+      phoneNumber, 
+      address
+    }
+    this.props.onRegister(inputUser);
     this.setState({
       email: "",
       name: "",
       phoneNumber: "",
-      address: "", 
+      address: "",
+      isValidEmail: false,
+      isValidName: false,
+      isValidPhoneNumber: false,
+      isValidAddress: false,
       isBtnLoading: true 
     });
     setTimeout(() => {

@@ -22,7 +22,7 @@ const Container = styled.div`
   min-height: 66vh;
 `;
 
-const TablePresenter = ({ users, loading, onDelete, onPageClick, activePage, pages }) => 
+const TablePresenter = ({ users, loading, onDelete, onPageClick, activePage, pages, onModify }) => 
   <Table loading={loading ? 1 : 0}>
     {loading ? (
       <Loader />
@@ -48,6 +48,7 @@ const TablePresenter = ({ users, loading, onDelete, onPageClick, activePage, pag
                     phoneNumber={user.phoneNumber}
                     address={user.address}
                     onDelete={onDelete}
+                    onModify={onModify}
                   />
                 )
             )}
@@ -72,6 +73,7 @@ TablePresenter.propTypes = {
   activePage: PropTypes.number.isRequired,
   onPageClick: PropTypes.func.isRequired,
   pages: PropTypes.number.isRequired,
+  onModify: PropTypes.func.isRequired
 };
 
 export default TablePresenter;

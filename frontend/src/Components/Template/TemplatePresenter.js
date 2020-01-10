@@ -15,11 +15,12 @@ const TemplatePresenter = ({
   users,
   onRegister,
   onDelete,
-  loading
+  loading,
+  onModify
 }) => (
   <Container>
     <Form onRegister={onRegister} />
-    <Table users={users} onDelete={onDelete} loading={loading} />
+    <Table users={users} onDelete={onDelete} loading={loading} onModify={onModify} />
   </Container>
 );
 

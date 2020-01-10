@@ -35,12 +35,12 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-export default ({ id, email, name, phoneNumber, address, onDelete }) => 
+export default ({ id, email, name, phoneNumber, address, onDelete, onModify }) => 
   <List>
     <Item>{id}</Item>
     <Item>{email}</Item>
     <Item>{name}</Item>
     <Item>{phoneNumber}</Item>
-    <Item>{address}</Item>
+    <Item onClick={id === "id" ? null : () => onModify(id)}>{address}</Item>
     <Item>{id === "id" ? "-" : <Button onClick={() => onDelete(id)}>삭제</Button>}</Item>
   </List>

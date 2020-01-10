@@ -21,6 +21,15 @@ class TableContainer extends Component {
     return rest === 0 ? pages : pages + 1;
   }
 
+  onModify = (id) => {
+    const inputAddress = prompt("바꿀 주소를 입력해주세요.");
+
+    if(!inputAddress) 
+      return;
+
+    this.props.onModify(id, inputAddress);
+  }
+
   render() {
     const { activePage } = this.state;
     const { users, onDelete, loading } = this.props;
@@ -33,6 +42,7 @@ class TableContainer extends Component {
         onPageClick={this.onPageClick}
         activePage={activePage}
         pages={this.handleActivePages()}
+        onModify={this.onModify}
       />
     );
   }

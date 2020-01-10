@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import TemplatePresenter from "./TemplatePresenter";
-import { getUserList, registerUser, deleteUser } from "../../actions";
+import { getUserList, registerUser, deleteUser, modifyAddress } from "../../actions";
+import { myAlert } from "../../helpers";
 
 
 class TemplateContainer extends Component {
@@ -21,19 +22,17 @@ class TemplateContainer extends Component {
       const { data: { users }} = await getUserList();
       this.setState({ users, loading: false });
     } catch (err) {
-      const { data: { message }, status, statusText } = err.response;
-      alert(message || `${status} ${statusText}`);
+      myAlert(err);
     }
   };
 
-  onRegister = async (email, name, phoneNumber, address, isValid) => {
+  onRegister = async (inputUser) => {
     try {
-      await registerUser(email, name, phoneNumber, address);
+      await registerUser(inputUser);
       const { data: { users }} = await getUserList();
       this.setState({ users });
     } catch (err) {
-      const { data: { message }, status, statusText } = err.response;
-      alert(message || `${status} ${statusText}`);
+      myAlert(err);
     }
   };
 
@@ -45,14 +44,23 @@ class TemplateContainer extends Component {
     try {
       await deleteUser(id);
     } catch(err) {
-      const { data: { message }, status, statusText } = err.response;
-      return alert(message || `${status} ${statusText}`);
+      myAlert(err);
     }
     
     const index = users.findIndex(user => user.id === id);
     users.splice(index, 1);
     this.setState({ users });
   };
+
+  onModify = async (id, address) => {
+    try {
+      await modifyAddress(id, address);
+      const { data: { users }} = await getUserList();
+      this.setState({ users });
+    } catch(err) {
+      myAlert(err);
+    }
+  }
 
   render() {
     const { users, loading } = this.state;
@@ -63,6 +71,7 @@ class TemplateContainer extends Component {
         onRegister={this.onRegister}
         onDelete={this.onDelete}
         loading={loading}
+        onModify={this.onModify}
       />
     );
   }

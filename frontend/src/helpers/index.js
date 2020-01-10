@@ -23,3 +23,8 @@ export const validator = (type, value) => {
       break;
   }
 }
+
+export const myAlert = (error) => {
+  const { data: { message }, status, statusText } = error.response;
+  return alert(message || `${status} ${statusText}`);
+};

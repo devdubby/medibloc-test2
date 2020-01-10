@@ -2,13 +2,8 @@ import { api } from "../common/api";
 
 export const getUserList = () => api.get("users");
 
-export const registerUser = (email, name, phoneNumber, address) => 
-  api.post("users", {
-    email, 
-    name, 
-    phoneNumber, 
-    address
-  });
+export const registerUser = (inputUser) => 
+  api.post("users", inputUser);
 
 export const deleteUser = id => 
   api.delete(`users?id=${id}`)
