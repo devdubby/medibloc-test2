@@ -45,7 +45,8 @@ const FormPresenter = ({
   isValidEmail,
   isValidName,
   isValidPhoneNumber,
-  isValidAddress
+  isValidAddress,
+  isValid
 }) =>
   <Form onSubmit={onRegister}>
     <Input
@@ -82,12 +83,7 @@ const FormPresenter = ({
       <Loader />
     ) : (
       <Button
-        isBtnActive={
-          isValidEmail &&
-          isValidName &&
-          isValidPhoneNumber &&
-          isValidAddress
-        }
+        isBtnActive={isValid}
       >
         생성
       </Button>

@@ -1,7 +1,8 @@
 import React, {Component } from "react";
 import FormPresenter from "./FormPresenter";
-import { registerUser } from "../../actions";
-import { emailValidator, nameValidator, phoneNumberValidator, addressValidator } from "../../helpers";
+import { connect } from "react-redux";
+import { registerUser, getUserList, setUserList } from "../../actions";
+import { validator } from "../../helpers";
 
 class FormContainer extends Component {
   constructor(props) {
@@ -17,22 +18,26 @@ class FormContainer extends Component {
       isValidName: false,
       isValidPhoneNumber: false,
       isValidAddress: false,
-      isBtnActive: false,
+      isValid: false,
     };
   }
 
   onChange = event => {
     const { id, value } = event.target;
-    const { isValidEmail, isValidName, isValidPhoneNumber, isValidAddress } = this.state;
-    const validatorObj = {
-      email: emailValidator(value),
-      name: nameValidator(value),
-      phoneNumber: phoneNumberValidator(value),
-      address: addressValidator(value)
-    };
-    const isValid = validatorObj[id];
+
+    const isValid = validator(id, value);
     this.setState({ [id]: value, ...isValid });
   };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { isValidEmail, isValidName, isValidPhoneNumber, isValidAddress } = prevState;
+    
+    if(isValidEmail && isValidName && isValidPhoneNumber && isValidAddress) {
+      return { isValid: true };
+    } else {
+      return { isValid: false };
+    }
+  }
 
   onRegister = async event => {
     event.preventDefault();
@@ -41,23 +46,32 @@ class FormContainer extends Component {
       name,
       phoneNumber,
       address,
-      isValidEmail,
-      isValidName,
-      isValidPhoneNumber,
-      isValidAddress
+      isValid
     } = this.state;
 
-    if (
-      !isValidEmail ||
-      !isValidName ||
-      !isValidPhoneNumber ||
-      !isValidAddress
-    ) {
+    if (!isValid)
       return;
-    }
 
-    try {
-      await registerUser(email, name, phoneNumber, address);
+    // try {
+    //   await registerUser(email, name, phoneNumber, address);
+    //   this.setState({
+    //     email: "",
+    //     name: "",
+    //     phoneNumber: "",
+    //     address: "",
+    //     isBtnLoading: true
+    //   });
+    //   window.location.reload();
+    //   // props로써 getUserList 사용
+    // } catch (err) {
+    //   const { data: { message }, status, statusText } = err.response;
+    //   alert(message || `${status} ${statusText}`);
+    // }
+    Promise.all([
+      registerUser(email, name, phoneNumber, address),
+      getUserList()
+    ]).then(([data1, data2]) => {
+      this.props.setUserList(data2.users);
       this.setState({
         email: "",
         name: "",
@@ -65,11 +79,10 @@ class FormContainer extends Component {
         address: "",
         isBtnLoading: true
       });
-      window.location.reload();
-    } catch (err) {
+    }).catch(err => {
       const { data: { message }, status, statusText } = err.response;
       alert(message || `${status} ${statusText}`);
-    }
+    });
   };
 
   render() {
@@ -78,12 +91,12 @@ class FormContainer extends Component {
       name,
       phoneNumber,
       address,
-      users,
       isBtnLoading,
       isValidEmail,
       isValidName,
       isValidAddress,
-      isValidPhoneNumber
+      isValidPhoneNumber,
+      isValid
     } = this.state;
 
     return (
@@ -98,10 +111,21 @@ class FormContainer extends Component {
         isValidEmail={isValidEmail}
         isValidName={isValidName}
         isValidPhoneNumber={isValidPhoneNumber}
-        isValidAddress={isValidAddress}      
+        isValidAddress={isValidAddress}
+        isValid={isValid}
       />
     );
   }
 }
 
-export default FormContainer;
+const mapStateToProps = state => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUserList: (users) => dispatch(setUserList(users)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormContainer);
