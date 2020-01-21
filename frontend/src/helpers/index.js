@@ -2,23 +2,13 @@ export const validator = (type, value) => {
   switch (type) {
     case "email":
       let regExp = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-      if(value.match(regExp)) {
-        return { isValidEmail: true };
-      } else {
-        return { isValidEmail: false };
-      }
+      return { isValidEmail: value.match(regExp) };
     case "name":
-      if(value !== "" && value.length >= 2) {
-        return { isValidName: true };
-      } else return { isValidName: false };
+      return { isValidName: value !== "" && value.length >= 2 };
     case "phoneNumber":
-      if(value !== "" && value.length >= 11 && value.indexOf("-") === -1) {
-        return { isValidPhoneNumber: true };
-      } else return { isValidPhoneNumber: false };
+      return { isValidPhoneNumber: value !== "" && value.length >= 11 && value.indexOf("-") === -1 };
     case "address":
-      if(value !== "") {
-        return { isValidAddress: true };
-      } else return { isValidAddress: false };
+      return { isValidAddress: value !== "" };
     default:
       break;
   }

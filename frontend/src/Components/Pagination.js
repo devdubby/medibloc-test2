@@ -11,7 +11,7 @@ const Container = styled.div`
 `;
 
 const NumberText = styled.span`
-  color: ${props => props.isActive ? "black" : "#7295bd"};
+  color: ${props => (props.isActive ? "black" : "#7295bd")};
   font-size: 18px;
   width: 20px;
   cursor: pointer;
@@ -25,24 +25,29 @@ const Button = styled.button`
   margin: 0px 5px;
 `;
 
-const Pagination = ({
-  activePage,
-  onPageClick,
-  pages
-}) => 
+const Pagination = ({ activePage, onPageClick, pages }) => (
   <Container>
     <Button>{`<`}</Button>
     <Number activePage={activePage} pages={pages} onPageClick={onPageClick} />
     <Button>{`>`}</Button>
   </Container>
+);
 
 const Number = ({ activePage, pages, onPageClick }) => {
   const item = [];
-  for(let i = 0; i < pages; i++) {
-    item.push(<NumberText key={`number${i+1}`} isActive={activePage === i ? true : false} onClick={() => onPageClick(i)}>{i+1}</NumberText>)
+  for (let i = 0; i < pages; i++) {
+    item.push(
+      <NumberText
+        key={`number${i + 1}`}
+        isActive={activePage === i ? true : false}
+        onClick={() => onPageClick(i)}
+      >
+        {i + 1}
+      </NumberText>
+    );
   }
   return item;
-}
+};
 
 Pagination.propTypes = {
   activePage: PropTypes.number.isRequired,
